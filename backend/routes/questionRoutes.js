@@ -109,8 +109,48 @@ router.get('/all/:word', async (request, response) => {
     }
 });
 
+router.get('/array/:word', async (request, response) => {
+    try {
+        const { word } = request.params;
+        const regex = new RegExp(word, 'i'); 
+        const questions = await Question.find({ questionText: { $regex: regex } });
 
+        return response.status(200).json(questions);
 
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
+router.get('/stack/:word', async (request, response) => {
+    try {
+        const { word } = request.params;
+        const regex = new RegExp(word, 'i'); 
+        const questions = await Question.find({ questionText: { $regex: regex } });
+
+        return response.status(200).json(questions);
+
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
+router.get('/search/:word', async (request, response) => {
+    try {
+        const { word } = request.params;
+        const regex = new RegExp(word, 'i'); // 'i' flag for case-insensitive search
+        const questions = await Question.find({ questionText: { $regex: regex } });
+        return response.status(200).json({
+            count: questions.length,
+            data: questions,
+        });
+    } catch (error) {
+        console.error(error.message);
+        response.status(500).send({ message: 'Error searching for questions' });
+    }
+});
 
 // Route for Update a Question
 router.put('/all/:id', async (request, response) => {
