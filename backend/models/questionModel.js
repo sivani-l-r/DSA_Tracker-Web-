@@ -9,6 +9,17 @@ const questionSchema = mongoose.Schema(
     questionType: {
         type: String,
         required: true,    
+    },
+    attempts:
+    {
+        type: Number,
+        default: 0
+    },
+    questionNote:
+    {
+        type: String,
+        default: ''
+
     }
 
 },
