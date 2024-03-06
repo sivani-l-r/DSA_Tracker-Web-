@@ -9,6 +9,7 @@ import AddQuestionForm from './components/AddQuestionForm';
 import DsaTracker from './components/DsaTracker';
 import ArrayQuestions from './components/ArrayQuestions';
 import StackQuestions from './components/StackQuestions';
+import AllQuestions from './components/AllQuestions';
 
 function App() {
   return (
@@ -16,11 +17,17 @@ function App() {
       <div style={{ textAlign: 'center', fontFamily: 'Arial, sans-serif', padding: '20px' }}>
         <h1 style={{ fontSize: '2.5rem', marginBottom: '30px' }}>DSA Tracker</h1>
         <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Link to="/all" style={linkStyle}>
+            <div style={boxStyle}>
+              All 
+            </div>
+          </Link>
           <Link to="/array" style={linkStyle}>
             <div style={boxStyle}>
               Array
             </div>
           </Link>
+          
           <Link to="/stack" style={linkStyle}>
             <div style={boxStyle}>
               Stack
@@ -30,6 +37,8 @@ function App() {
         </div>
         <Routes>
           <Route path="/" element={<AddQuestionForm />} />
+          <Route path="/all" element={<AllQuestions />} />
+
           <Route path="/array" element={<ArrayQuestions />} />
           <Route path="/stack" element={<StackQuestions />} />
           {/* Add routes for other components */}
@@ -63,3 +72,5 @@ const boxStyle = {
 };
 
 export default App;
+
+
