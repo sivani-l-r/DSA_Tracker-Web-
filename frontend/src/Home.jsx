@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
-import { Link } from 'react-router-dom'; 
-import CalendarHeatmap from './CalendarHeatMap.jsx';
-import QuestionDetails from './QuestionDetails.jsx';
-import { PDFViewer, Document, Page, Text } from '@react-pdf/renderer';
+import React from 'react'
 
-const App = () => {
-  const [questions, setQuestions] = useState([]);
+const Home = () => {
+
+    const [questions, setQuestions] = useState([]);
   const [newQuestionText, setNewQuestionText] = useState('');
   const [newQuestionType, setNewQuestionType] = useState('');
   const [error, setError] = useState('');
@@ -20,7 +15,6 @@ const App = () => {
   const [editedType, setEditedType] = useState('');
   const [editedAttempts, setEditedAttempts] = useState('');
   const [editedNote, setEditedNote] = useState('');
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   useEffect(() => {
     fetchQuestions();
@@ -110,69 +104,7 @@ const App = () => {
       setError('Error deleting question');
     }
   };
-
-  const [stats, setStats] = useState({
-    totalQuestions: 0,
-    totalAttempts: 0,
-    averageAttempts: 0,
-    arrayQuestions: 0,
-    stackQuestions: 0
-  });
-
-  useEffect(() => {
-    // Fetch stats data
-    fetchStats();
-  }, [questions]); // Update stats whenever questions change
-
-  const fetchStats = () => {
-    // Calculate total stats
-    const totalQuestions = questions.length;
-    const totalAttempts = questions.reduce((total, question) => total + parseInt(question.attempts), 0);
-    const averageAttempts = totalQuestions > 0 ? totalAttempts / totalQuestions : 0;
-
-    // Calculate stats for each category
-    const arrayQuestions = questions.filter(question => question.questionType === 'Array').length;
-    const stackQuestions = questions.filter(question => question.questionType === 'Stack').length;
-
-    // Update stats state
-    setStats({
-      totalQuestions,
-      totalAttempts,
-      averageAttempts,
-      arrayQuestions,
-      stackQuestions
-    });
-  };
-
-  const [questionCreationData, setQuestionCreationData] = useState([]);
-
-  const handleQuestionClick = (question) => {
-    setSelectedQuestion(question);
-  };
-
-  const handleCloseDetails = () => {
-    setSelectedQuestion(null);
-  };
-
-  const pdfDocument = useRef(null);
-
-  const handleExportPDF = () => {
-    // Trigger PDF generation
-    pdfDocument.current.update();
-  };
-
-  const PDFDocument = () => (
-    <Document>
-      <Page>
-        {questions.map((question, index) => (
-          <Text key={index}>
-            {`Question ${index + 1}: ${question.questionText}, Type: ${question.questionType}, Note: ${question.questionNote}`}
-          </Text>
-        ))}
-      </Page>
-    </Document>
-  );
-
+  
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: '0 auto' }}>
       <h1 style={{ color: '#007bff', fontSize: '2rem', marginBottom: '20px', textAlign: 'center' }}>DSA Tracker</h1>
@@ -262,7 +194,7 @@ const App = () => {
             ))
           ) : (
             questions.map((question) => (
-              <tr key={question._id} onClick={() => handleQuestionClick(question)} style={{ cursor: 'pointer' }}>
+              <tr key={question._id}>
                 <td style={{ padding: '12px', fontSize: '1rem', borderRight: '1px solid #ccc' , borderLeft: '1px solid #ccc' }}>{question.questionText}</td>
                 <td style={{ padding: '12px', fontSize: '1rem' , borderRight: '1px solid #ccc' }}>{question.questionType}</td>
                 <td style={{ padding: '12px', fontSize: '1rem' , borderRight: '1px solid #ccc' }}>{question.attempts}</td>
@@ -278,11 +210,6 @@ const App = () => {
           )}
         </tbody>
       </table>
-      {selectedQuestion && (
-        <div style={{ position: 'fixed', top: '0', left: '0', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: '999', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <QuestionDetails question={selectedQuestion} onClose={handleCloseDetails} />
-        </div>
-      )}
       {/* Modal for editing question */}
       {editingQuestion && (
         <div style={{ position: 'fixed', top: '0', left: '0', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: '999', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -335,49 +262,8 @@ const App = () => {
           </div>
         </div>
       )}
-      <h2 style={{ color: '#007bff', fontSize: '1.5rem', marginBottom: '20px', borderBottom: '2px solid #007bff', paddingBottom: '10px' }}>Stats</h2>
-      {/* Display stats */}
-      <div style={{ backgroundColor: '#f0f0f0', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
-        <h3 style={{ color: '#007bff', fontSize: '1.2rem', marginBottom: '10px' }}>Statistics Overview</h3>
-        <div>
-          <p style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: '0' }}>Total Questions</p>
-          <p style={{ fontSize: '1.2rem', margin: '0' }}>{stats.totalQuestions}</p>
-        </div>
-        <div>
-          <p style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: '0' }}>Total Attempts</p>
-          <p style={{ fontSize: '1.2rem', margin: '0' }}>{stats.totalAttempts}</p>
-        </div>
-        <div>
-          <p style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: '0' }}>Average Attempts per Question</p>
-          <p style={{ fontSize: '1.2rem', margin: '0' }}>{stats.averageAttempts.toFixed(2)}</p>
-        </div>
-        {/* Bar Graph */}
-        <div style={{ marginTop: '20px' }}>
-          {/* Array Questions */}
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <div style={{ width: '120px', textAlign: 'right', paddingRight: '10px' }}>Array Questions:</div>
-            <div style={{ flex: '1', height: '20px', backgroundColor: '#007bff', borderRadius: '4px', position: 'relative' }}>
-              <div style={{ width: `${(stats.arrayQuestions / stats.totalQuestions) * 100}%`, height: '100%', backgroundColor: '#4CAF50', borderRadius: '4px' }}></div>
-              <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: '50%', color: '#fff', fontWeight: 'bold', fontSize: '0.8rem' }}>{stats.arrayQuestions}</div>
-            </div>
-          </div>
-          {/* Stack Questions */}
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            <div style={{ width: '120px', textAlign: 'right', paddingRight: '10px' }}>Stack Questions:</div>
-            <div style={{ flex: '1', height: '20px', backgroundColor: '#007bff', borderRadius: '4px', position: 'relative' }}>
-              <div style={{ width: `${(stats.stackQuestions / stats.totalQuestions) * 100}%`, height: '100%', backgroundColor: '#FFC107', borderRadius: '4px' }}></div>
-              <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: '50%', color: '#fff', fontWeight: 'bold', fontSize: '0.8rem' }}>{stats.stackQuestions}</div>
-            </div>
-          </div>
-          
-        </div>
-        <CalendarHeatmap data={questionCreationData} />
-      </div>
-      
     </div>
   );
-};
+}
 
-export default App;
-
-
+export default Home
