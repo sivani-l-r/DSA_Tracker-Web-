@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 import CalendarHeatmap from './CalendarHeatMap.jsx';
 import QuestionDetails from './QuestionDetails.jsx';
 import { PDFViewer, Document, Page, Text } from '@react-pdf/renderer';
+import StatisticsPage from './Stats';
+import { TwitterShareButton, FacebookShareButton } from 'react-share';
+
 
 const App = () => {
   const [questions, setQuestions] = useState([]);
@@ -21,7 +24,9 @@ const App = () => {
   const [editedAttempts, setEditedAttempts] = useState('');
   const [editedNote, setEditedNote] = useState('');
   const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [pdfVisible, setPdfVisible] = useState(false); // State to manage PDFViewer visibility
+  const [pdfVisible, setPdfVisible] = useState(false); 
+  const [score, setScore] = useState(0);
+  const [streak, setStreak] = useState(0);
 
   useEffect(() => {
     fetchQuestions();
@@ -56,6 +61,7 @@ const App = () => {
       setNewQuestionText('');
       setNewQuestionType('');
       fetchQuestions();
+      
     } catch (error) {
       console.error('Error adding question:', error);
       setError('Error adding question');
@@ -84,9 +90,9 @@ const App = () => {
         attempts: editedAttempts,
         questionNote: editedNote,
       });
-      console.log(response.data); // Log response if needed
-      fetchQuestions(); // Fetch questions again to update UI
-      setEditingQuestion(null); // Reset editing state
+      console.log(response.data); 
+      fetchQuestions(); 
+      setEditingQuestion(null); 
     } catch (error) {
       console.error('Error editing question:', error);
       setError('Error editing question');
@@ -105,7 +111,7 @@ const App = () => {
     try {
       const response = await axios.delete(`http://localhost:5555/all/${questionId}`);
       console.log(response.data); // Log response if needed
-      fetchQuestions(); // Fetch questions again to update UI
+      fetchQuestions();
     } catch (error) {
       console.error('Error deleting question:', error);
       setError('Error deleting question');
@@ -130,20 +136,35 @@ const App = () => {
     const totalQuestions = questions.length;
     const totalAttempts = questions.reduce((total, question) => total + parseInt(question.attempts), 0);
     const averageAttempts = totalQuestions > 0 ? totalAttempts / totalQuestions : 0;
-
+  
     // Calculate stats for each category
     const arrayQuestions = questions.filter(question => question.questionType === 'Array').length;
     const stackQuestions = questions.filter(question => question.questionType === 'Stack').length;
-
+  
+    // Calculate arrayPercentage and stackPercentage based on attempts
+    const totalArrayAttempts = questions
+      .filter(question => question.questionType === 'Array')
+      .reduce((total, question) => total + parseInt(question.attempts), 0);
+    const totalStackAttempts = questions
+      .filter(question => question.questionType === 'Stack')
+      .reduce((total, question) => total + parseInt(question.attempts), 0);
+  
+    const arrayPercentage = totalArrayAttempts > 0 ? (totalArrayAttempts / totalAttempts) * 100 : 0;
+    const stackPercentage = totalStackAttempts > 0 ? (totalStackAttempts / totalAttempts) * 100 : 0;
+  
     // Update stats state
     setStats({
       totalQuestions,
       totalAttempts,
       averageAttempts,
       arrayQuestions,
-      stackQuestions
+      stackQuestions,
+      arrayPercentage,
+      stackPercentage
     });
   };
+  
+
 
   const [questionCreationData, setQuestionCreationData] = useState([]);
 
@@ -164,27 +185,68 @@ const App = () => {
     pdfDocument.current.update();
   };
 
+
+  
   const PDFDocument = () => (
     <Document>
-      <Page>
-        {questions.map((question, index) => (
-          <Text key={index}>
-            {`Question ${index + 1}:`} 
-            {'\t'}
-            <Text style={{ fontWeight: 'bold' }}>{question.questionText}</Text>
-            {'\t'}
-            {`, Type: `}
-            <Text style={{ fontStyle: 'italic' }}>{question.questionType}</Text>
-            {'\t'}
-            {`, Note: `}
-            <Text style={{ fontStyle: 'italic' }}>{question.questionNote}</Text>
-          </Text>
-        ))}
-      </Page>
-    </Document>
+    <Page>
+     {questions.map((question, index) => (
+      <Text key={index}>
+<Text style={{ fontWeight: 'bold', fontSize: 12 }}>{`Question ${index + 1}:`}</Text>       {'\n'}
+       <Text style={{ fontSize: 12 }}>{question.questionText}</Text>
+       {'\n'}
+       <Text style={{ fontStyle: 'italic', fontSize: 10 }}>{`, Type: ${question.questionType}, Note: ${question.questionNote}`}</Text>
+      </Text>
+     ))}
+    </Page>
+   </Document>
   );
+
+  const handleShare = async () => {
+    try {
+      // Fetch user interaction data from your backend to get the current streak
+      const response = await axios.get('http://localhost:5555/user-interaction-data');
+      const userInteractionData = response.data;
   
+      // Calculate streak based on the user interaction data
+      const currentStreak = calculateStreak(userInteractionData);
   
+      // Define the content to share including the current streak
+      const shareText = `Check out my DSA Tracker stats on this amazing app! Current streak: ${currentStreak}`;
+      const shareUrl = 'https://dsa-tracker.com/stats'; // Replace with your actual stats page URL
+  
+      // Open a new window for sharing on Twitter
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, '_blank');
+      
+      // Open a new window for sharing on Facebook
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+    } catch (error) {
+      console.error('Error fetching user interaction data:', error);
+      // Handle error
+    }
+  };
+  
+
+  const calculateStreak = (interactionData) => {
+    // Assuming interactionData is an array of timestamps representing user interactions
+    // You can implement your streak calculation logic here
+    // For example, counting consecutive days with interactions
+    let currentStreak = 0;
+    const today = new Date().setHours(0, 0, 0, 0);
+
+    for (let i = interactionData.length - 1; i >= 0; i--) {
+      const interactionDate = new Date(interactionData[i]).setHours(0, 0, 0, 0);
+
+      if (today - interactionDate === currentStreak * 24 * 60 * 60 * 1000) {
+        currentStreak++;
+      } else {
+        break;
+      }
+    }
+
+    return currentStreak;
+  };
+
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: '0 auto' }}>
       <h1 style={{ color: '#007bff', fontSize: '2rem', marginBottom: '20px', textAlign: 'center' }}>DSA Tracker</h1>
@@ -260,7 +322,7 @@ const App = () => {
           {searchResults.length > 0 ? (
             searchResults.map((question) => (
               <tr key={question._id}>
-                <td style={{ padding: '12px', fontSize: '1rem', borderRight: '1px solid #ccc' }}>{question.questionText}</td>
+                <td key={question._id} onClick={() => handleQuestionClick(question)} style={{ cursor: 'pointer', padding: '12px', fontSize: '1rem', borderRight: '1px solid #ccc', borderLeft: '1px solid #ccc' }}>{question.questionText}</td>
                 <td style={{ padding: '12px', fontSize: '1rem' }}>{question.questionType}</td>
                 <td style={{ padding: '12px', fontSize: '1rem' }}>{question.attempts}</td>
                 <td style={{ padding: '12px', fontSize: '1rem' }}>{question.questionNote}</td>
@@ -274,8 +336,8 @@ const App = () => {
             ))
           ) : (
             questions.map((question) => (
-              <tr key={question._id} onClick={() => handleQuestionClick(question)} style={{ cursor: 'pointer' }}>
-                <td style={{ padding: '12px', fontSize: '1rem', borderRight: '1px solid #ccc' , borderLeft: '1px solid #ccc' }}>{question.questionText}</td>
+              <tr key={question._id}>
+                <td key={question._id} onClick={() => handleQuestionClick(question)} style={{ cursor: 'pointer', padding: '12px', fontSize: '1rem', borderRight: '1px solid #ccc', borderLeft: '1px solid #ccc' }}>{question.questionText}</td>
                 <td style={{ padding: '12px', fontSize: '1rem' , borderRight: '1px solid #ccc' }}>{question.questionType}</td>
                 <td style={{ padding: '12px', fontSize: '1rem' , borderRight: '1px solid #ccc' }}>{question.attempts}</td>
                 <td style={{ padding: '12px', fontSize: '1rem' , borderRight: '1px solid #ccc' }}>{question.questionNote}</td>
@@ -392,6 +454,30 @@ const App = () => {
             </div>
           </div>
         </div>
+        
+        <CalendarHeatmap />
+        <StatisticsPage
+  arrayPercentageProp={stats.arrayPercentage} // Use stats.arrayPercentage instead of arrayPercentage
+  stackPercentageProp={stats.stackPercentage}
+/>
+
+{/* Share button */}
+<div style={{ marginTop: '20px' }}>
+        <h3 style={{ color: '#007bff', fontSize: '1.2rem', marginBottom: '10px' }}>Share Your Stats</h3>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+          <TwitterShareButton url={'https://your-website.com/stats'} title={'Check out my DSA Tracker stats on this amazing app!'}>
+            <button style={{ marginRight: '10px', padding: '10px 20px', backgroundColor: '#1DA1F2', color: '#fff', border: 'none', borderRadius: '3px', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold' }}>Share on Twitter</button>
+          </TwitterShareButton>
+          <FacebookShareButton url={'https://your-website.com/stats'}>
+            <button style={{ padding: '10px 20px', backgroundColor: '#4267B2', color: '#fff', border: 'none', borderRadius: '3px', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold' }}>Share on Facebook</button>
+          </FacebookShareButton>
+        </div>
+      </div>
+
+      </div>
+      <h2 style={{ color: '#007bff', fontSize: '1.5rem', marginBottom: '20px', borderBottom: '2px solid #007bff', paddingBottom: '10px' }}>Profile</h2>
+      <div style={{ backgroundColor: '#f0f0f0', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+
       </div>
     </div>
   );
