@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaFilePdf } from 'react-icons/fa';
 import { Link } from 'react-router-dom'; 
 import CalendarHeatmap from './CalendarHeatMap.jsx';
 import QuestionDetails from './QuestionDetails.jsx';
@@ -21,6 +21,7 @@ const App = () => {
   const [editedAttempts, setEditedAttempts] = useState('');
   const [editedNote, setEditedNote] = useState('');
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [pdfVisible, setPdfVisible] = useState(false); // State to manage PDFViewer visibility
 
   useEffect(() => {
     fetchQuestions();
@@ -157,6 +158,8 @@ const App = () => {
   const pdfDocument = useRef(null);
 
   const handleExportPDF = () => {
+    // Set PDFViewer visibility to true
+    setPdfVisible(true);
     // Trigger PDF generation
     pdfDocument.current.update();
   };
@@ -166,13 +169,22 @@ const App = () => {
       <Page>
         {questions.map((question, index) => (
           <Text key={index}>
-            {`Question ${index + 1}: ${question.questionText}, Type: ${question.questionType}, Note: ${question.questionNote}`}
+            {`Question ${index + 1}:`} 
+            {'\t'}
+            <Text style={{ fontWeight: 'bold' }}>{question.questionText}</Text>
+            {'\t'}
+            {`, Type: `}
+            <Text style={{ fontStyle: 'italic' }}>{question.questionType}</Text>
+            {'\t'}
+            {`, Note: `}
+            <Text style={{ fontStyle: 'italic' }}>{question.questionNote}</Text>
           </Text>
         ))}
       </Page>
     </Document>
   );
-
+  
+  
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: '0 auto' }}>
       <h1 style={{ color: '#007bff', fontSize: '2rem', marginBottom: '20px', textAlign: 'center' }}>DSA Tracker</h1>
@@ -278,6 +290,16 @@ const App = () => {
           )}
         </tbody>
       </table>
+      {pdfVisible && (
+      <PDFViewer style={{ width: '100%', height: '500px' }}>
+        <PDFDocument ref={pdfDocument} />
+      </PDFViewer>
+      )}
+      <button onClick={() => setPdfVisible(!pdfVisible)} style={{ padding: '10px 20px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '3px', cursor: 'pointer', fontSize: '1rem', fontWeight: 'bold', marginRight: '10px' }}>
+        <FaFilePdf style={{ marginRight: '5px' }} /> Export PDF
+      </button>
+      {/* Other JSX content... */}
+
       {selectedQuestion && (
         <div style={{ position: 'fixed', top: '0', left: '0', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: '999', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <QuestionDetails question={selectedQuestion} onClose={handleCloseDetails} />
@@ -365,15 +387,12 @@ const App = () => {
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
             <div style={{ width: '120px', textAlign: 'right', paddingRight: '10px' }}>Stack Questions:</div>
             <div style={{ flex: '1', height: '20px', backgroundColor: '#007bff', borderRadius: '4px', position: 'relative' }}>
-              <div style={{ width: `${(stats.stackQuestions / stats.totalQuestions) * 100}%`, height: '100%', backgroundColor: '#FFC107', borderRadius: '4px' }}></div>
+              <div style={{ width: `${(stats.stackQuestions / stats.totalQuestions) * 100}%`, height: '100%', backgroundColor: '#4CAF50', borderRadius: '4px' }}></div>
               <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: '50%', color: '#fff', fontWeight: 'bold', fontSize: '0.8rem' }}>{stats.stackQuestions}</div>
             </div>
           </div>
-          
         </div>
-        <CalendarHeatmap data={questionCreationData} />
       </div>
-      
     </div>
   );
 };
