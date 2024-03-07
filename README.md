@@ -44,7 +44,11 @@ DSA Tracker is a web application designed to help you track and manage your Data
 5. Plotly.js: A JavaScript graphing library that enables interactive, publication-quality graphs in web applications.
 
 ## Team Members
-[Sivani](https://github.com/sivani-l-r)
+[Sivani L R](https://github.com/sivani-l-r)
+[Arathi Krishna A M](https://github.com/arathikrishnaam)
+[Khadeeja Thanseeha V ](https://github.com/khadeeja-thanseeha)
+[Adithya Ramesh](https://github.com/Adithya6ramesh)
+
 ## Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests for improvements or bug fixes.
