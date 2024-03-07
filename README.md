@@ -1,25 +1,32 @@
-## DSA Tracker
+# DSA Tracker
 
 
-# Description
-DSA Tracker is a web application designed to help you track and manage your Data Structures and Algorithms (DSA) practice questions using MERN stack. This application allows you to add, edit, delete, and search questions based on different criteria such as question type. Additionally, it provides statistics overview to track your progress and a profile section to manage your user information.
+## Description
+DSA Tracker is a web application designed to help you track and manage your Data Structures and Algorithms (DSA) practice questions using MERN stack. This application allows you to add, edit, delete, and search questions based on different criteria such as question type. Additionally, it provides statistics overview to track your progress and a profile section to manage your user information. Additionally it also includes features such as streaks, heatmaps etc to motivate you to consistently do the work. 
 
-Features
+## Features
 
 1.  Add New Question: Easily add new DSA questions with details like question text, type, and notes.
 2. Filter and Search: Filter questions by type (e.g., Array, Stack) and search for specific questions.
 3. Edit and Delete: Edit existing questions to update details and delete questions as needed.
 4. Statistics Overview: View statistics such as total questions, total attempts, and average attempts per question.
 5. Question Details: Click on a question to view detailed information about it.
-6. Export to PDF: Export your list of questions to a PDF document for offline reference.
-7. Stats Page: Check out your overall statistics, including a calendar heatmap of your practice sessions.
-8. Profile Page: View a visual representation of your DSA practice badges.
+6. Calendar Heatmap: Displays a calendar heatmap visualization to track question creation dates and streaks.
+7. Export to PDF: Export your list of questions to a PDF document for offline reference.
+8. Share Stats: Allows users to share their DSA Tracker stats on Twitter and Facebook.
+9. Stats Page: Check out your overall statistics, including a calendar heatmap of your practice sessions.
+10. Profile Page: View a visual representation of your DSA practice badges.
 
 
+## Technologies Used
 
-
-*Front-end : React             
-*Back-end: Node.js , Express.js , MongoDB
+### Frontend
+- React
+            
+### Backend
+- Node.js
+- Express.js
+- MongoDB
 
 
 Installation
