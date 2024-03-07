@@ -54,8 +54,6 @@ DSA Tracker is a web application designed to help you track and manage your Data
 
 Contributions are welcome! Feel free to open issues or submit pull requests for improvements or bug fixes.
 
-License
 
-*This project is licensed under the MIT License - see the LICENSE file for details.
 
 
