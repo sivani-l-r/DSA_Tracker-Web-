@@ -2,14 +2,14 @@ DSA Tracker is a web application designed to help you track and manage your Data
 
 Features
 
--Add New Question: Easily add new DSA questions with details like question text, type, and notes.
--Filter and Search: Filter questions by type (e.g., Array, Stack) and search for specific questions.
--Edit and Delete: Edit existing questions to update details and delete questions as needed.
--Statistics Overview: View statistics such as total questions, total attempts, and average attempts per question.
--Question Details: Click on a question to view detailed information about it.
--Export to PDF: Export your list of questions to a PDF document for offline reference.
--Stats Page: Check out your overall statistics, including a calendar heatmap of your practice sessions.
--Profile Page: View a visual representation of your DSA practice badges.
+1.Add New Question: Easily add new DSA questions with details like question text, type, and notes.
+2.Filter and Search: Filter questions by type (e.g., Array, Stack) and search for specific questions.
+3.Edit and Delete: Edit existing questions to update details and delete questions as needed.
+4.Statistics Overview: View statistics such as total questions, total attempts, and average attempts per question.
+5.Question Details: Click on a question to view detailed information about it.
+6.Export to PDF: Export your list of questions to a PDF document for offline reference.
+7.Stats Page: Check out your overall statistics, including a calendar heatmap of your practice sessions.
+8.Profile Page: View a visual representation of your DSA practice badges.
 
 
 *Front-end : React             
