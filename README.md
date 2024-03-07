@@ -3,6 +3,7 @@ DSA Tracker is a web application designed to help you track and manage your Data
 Features
 
 1.Add New Question: Easily add new DSA questions with details like question text, type, and notes.
+2.Filter and Search: Filter questions by type (e.g., Array, Stack) and search for specific questions.
 
 
 
