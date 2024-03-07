@@ -7,6 +7,7 @@ import QuestionDetails from './QuestionDetails.jsx';
 import { PDFViewer, Document, Page, Text } from '@react-pdf/renderer';
 import StatisticsPage from './Stats';
 import { TwitterShareButton, FacebookShareButton } from 'react-share';
+import Profile from './Profile.jsx';
 
 
 const App = () => {
@@ -477,7 +478,7 @@ const App = () => {
       </div>
       <h2 style={{ color: '#007bff', fontSize: '1.5rem', marginBottom: '20px', borderBottom: '2px solid #007bff', paddingBottom: '10px' }}>Profile</h2>
       <div style={{ backgroundColor: '#f0f0f0', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
-
+        <Profile />
       </div>
     </div>
   );
