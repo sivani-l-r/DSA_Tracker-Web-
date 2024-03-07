@@ -2,8 +2,15 @@ DSA Tracker is a web application designed to help you track and manage your Data
 
 Features
 
-1.Add New Question: Easily add new DSA questions with details like question text, type, and notes.
-2.Filter and Search: Filter questions by type (e.g., Array, Stack) and search for specific questions.
+1.  Add New Question: Easily add new DSA questions with details like question text, type, and notes.
+2. Filter and Search: Filter questions by type (e.g., Array, Stack) and search for specific questions.
+3. Edit and Delete: Edit existing questions to update details and delete questions as needed.
+4. Statistics Overview: View statistics such as total questions, total attempts, and average attempts per question.
+5. Question Details: Click on a question to view detailed information about it.
+6. Export to PDF: Export your list of questions to a PDF document for offline reference.
+7. Stats Page: Check out your overall statistics, including a calendar heatmap of your practice sessions.
+8. Profile Page: View a visual representation of your DSA practice badges.
+
 
 
 
@@ -19,12 +26,13 @@ Installation
 5. Open your browser and visit http://localhost:3000 to use the DSA Tracker.
 
 Dependencies
--React: https://reactjs.org/
--Axios: https://axios-http.com/
--React Icons: https://react-icons.github.io/react-icons/
--React Router: https://reactrouter.com/
--@react-pdf-viewer: https://react-pdf-viewer.dev/
--react-share: https://www.npmjs.com/package/react-share
+1. React: https://reactjs.org/
+2. Axios: https://axios-http.com/
+3. React Icons: https://react-icons.github.io/react-icons/
+4. React Router: https://reactrouter.com/
+5. @react-pdf-viewer: https://react-pdf-viewer.dev/
+6. react-share: https://www.npmjs.com/package/react-share
+
 
 Contributing
 *Contributions are welcome! Feel free to open issues or submit pull requests for improvements or bug fixes.
