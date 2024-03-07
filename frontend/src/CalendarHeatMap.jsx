@@ -24,24 +24,29 @@ const CalendarHeatmap = () => {
 
   const calculateStreak = (dates) => {
     let currentStreak = 0;
+    let maxStreak = 0;
     let today = new Date();
     let yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
-
+  
     for (let i = 0; i < dates.length; i++) {
       let currentDate = new Date(dates[i]);
       if (currentDate.toDateString() === today.toDateString()) {
         currentStreak++;
       } else if (currentDate.toDateString() === yesterday.toDateString()) {
+        currentStreak++;
         yesterday = currentDate;
       } else {
-        break;
+        maxStreak = Math.max(maxStreak, currentStreak);
+        currentStreak = 0;
+        yesterday = currentDate;
       }
-      yesterday.setDate(yesterday.getDate() - 1);
+      today.setDate(today.getDate() - 1);
     }
-    setStreak(currentStreak);
+    maxStreak = Math.max(maxStreak, currentStreak);
+    setStreak(maxStreak);
   };
-
+  
   const isQuestionCreatedOnDate = (date) => {
     return questionDates.includes(date);
   };
