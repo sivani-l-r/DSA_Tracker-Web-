@@ -30,24 +30,24 @@ DSA Tracker is a web application designed to help you track and manage your Data
 
 
 ## Installation
-1. Clone the repository:  git clone <repository_url>
+1. Clone the repository:  gh repo clone sivani-l-r/DSA_Tracker
 2. Navigate to the project directory: cd dsa-tracker
 3. Install dependencies: npm install
 4. Start the development server: npm start
 5. Open your browser and visit http://localhost:3000 to use the DSA Tracker.
 
-Dependencies
-1. React: https://reactjs.org/
-2. Axios: https://axios-http.com/
-3. React Icons: https://react-icons.github.io/react-icons/
-4. React Router: https://reactrouter.com/
-5. @react-pdf-viewer: https://react-pdf-viewer.dev/
-6. react-share: https://www.npmjs.com/package/react-share
+## Dependencies
+1. React: The core library for building user interfaces in React applications.
+2. axios: A promise-based HTTP client for making requests from the browser.
+3. PDFViewer, Document, Page, Text: Components from '@react-pdf/renderer' used for generating PDF documents.
+4. TwitterShareButton, FacebookShareButton: Components from 'react-share' for sharing content on Twitter and Facebook.
+5. Plotly.js: A JavaScript graphing library that enables interactive, publication-quality graphs in web applications.
 
+## Team Members
+[Sivani](https://github.com/sivani-l-r)
+## Contributing
 
-Contributing
-
-*Contributions are welcome! Feel free to open issues or submit pull requests for improvements or bug fixes.
+Contributions are welcome! Feel free to open issues or submit pull requests for improvements or bug fixes.
 
 License
 
