@@ -29,7 +29,7 @@ DSA Tracker is a web application designed to help you track and manage your Data
 - MongoDB
 
 
-Installation
+## Installation
 1. Clone the repository:  git clone <repository_url>
 2. Navigate to the project directory: cd dsa-tracker
 3. Install dependencies: npm install
