@@ -18,6 +18,8 @@ DSA Tracker is a web application designed to help you track and manage your Data
 10. Streaks: Track consecutive days of practice to motivate users to maintain a consistent practice routine.
 11. Profile Page: View a visual representation of your DSA practice badges.
 
+## Demo
+[![YouTube Video](https://youtu.be/8YfLGzNUPvY)
 
 ## Technologies Used
 
